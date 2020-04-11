@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.dao.StudentsMapper">
+	<sql id="dd">
+		<where>
+			<if test="sname!=null and sname!=''">
+				and sname like "%"#{sname}"%"
+			</if>
+			<if test="sphone!=null and sphone!=''">
+				and sphone=#{sphone}
+			</if>
+			<if test="sFjiaofei!=null and sFjiaofei!=''">
+				and sFjiaofei=#{sFjiaofei}
+			</if>
+			<if test="askid!=null and askid!=''">
+				and askid=#{askid}
+			</if>
+			<if test="qq!=null and qq!=''">
+				and qq=#{qq}
+			</if>
+			<if test="sfyouxiao!=null and sfyouxiao!=''">
+				and sfyouxiao=#{sfyouxiao}
+			</if>
+			<if test="sFhuifang!=null and sFhuifang!=''">
+				and sFhuifang=#{sFhuifang}
+			</if>
+			<if test="startcreateTime!=null and startcreateTime!=''">
+				and createTime &gt;=#{startcreateTime}
+			</if>
+			<if test="endcreateTime!=null and endcreateTime!=''">
+				and createTime &lt;=#{endcreateTime}
+			</if>
+			 <if test="netaskid!=null and netaskid!=''">
+				and netaskid=#{netaskid}
+			</if> 
+		</where>
+	</sql>
+	<select id="selectAll" parameterType="fenyeStu"
+		resultType="students">
+		select * from (SELECT
+		s.sid,s.sname,s.createTime,s.sphone,s.sex,s.age,s.xueLi,s.`status`,s.messageAddress,s.messageChannel,s.messagedept,s.messageWord,s.netaskid,s.askid,s.address,s.weChat,s.qq,s.baobei,s.kecFangXiang,s.sfyouxiao,s.dafen,s.sFhuifang,s.firsthuifangTime,s.sFshangmeng,s.shangmengTime,s.wuxiaoyuanying,s.sFjiaofei,s.jiaofeiTime,s.money,s.sFtuifei,s.lururen,s.zXSbeizhu,s.sFjinban,s.jinbanTime,s.jinbanbeizhu,s.tuifeiyuanyin,s.dingjin,s.dingjinTime,u1.uname
+		askname FROM students s INNER JOIN users u1 
+	 ON s.askid=u1.uid ) l
+		<include refid="dd"></include>
+		limit #{page},#{rows}
+	</select>
+	<select id="selectNum" parameterType="fenyeStu" resultType="int">
+		select count(sid) from students
+		<include refid="dd"></include>
+	</select>
+	<delete id="deleteStu">
+		delete from students
+		<where>
+			sid=#{sid}
+		</where>
+	</delete>
+	<select id="selectU" resultType="users">
+		SELECT u.uid,u.uname from users
+		u INNER JOIN (SELECT * from userroles WHERE
+		rid=1) l ON u.uid=l.uid 
+	</select>
+	<select id="selectUU" resultType="users">
+		SELECT u.uid,u.uname from users
+		u INNER JOIN (SELECT * from userroles WHERE
+		rid=2) l ON u.uid=l.uid
+	</select>
+	<insert id="insertStu">
+		insert into
+		students(sname,createTime,sphone,sex,age,xueli,status,messageChannel,messageAddress,messageWord,weChat,qq,baobei)
+		values(#{sname},#{createTime},#{sphone},#{sex},#{age},#{xueli},#{status},#{messageChannel},#{messageAddress},#{messageWord},#{weChat},#{qq},#{baobei});
+	</insert>
+	<update id="updateStu">
+		update students
+		<set>
+			<if test="sex!=null and sex!=''">
+				sex=#{sex},
+			</if>
+			<if test="dingjinTime!=null and dingjinTime!=''">
+				dingjinTime=#{dingjinTime},
+			</if>
+			<if test="zXSbeizhu!=null and zXSbeizhu!=''">
+			zXSbeizhu=#{zXSbeizhu},
+			</if>
+			<if test="jinbanbeizhu!=null and jinbanbeizhu!=''">
+			jinbanbeizhu=#{jinbanbeizhu},
+			</if>
+			<if test="jinbanTime!=null and jinbanTime!=''">
+			jinbanTime=#{jinbanTime},
+			</if>
+			<if test="sFjinban!=null and sFjinban!=''">
+			sFjinban=#{sFjinban},
+			</if>
+			<if test="tuifeiyuanyin!=null and tuifeiyuanyin!=''">
+			tuifeiyuanyin=#{tuifeiyuanyin},
+			</if>
+			<if test="lururen!=null and lururen!=''">
+			lururen=#{lururen},
+			</if>
+			<if test="sFtuifei!=null and sFtuifei!=''">
+			sFtuifei=#{sFtuifei},
+			</if>
+			<if test="askid!=null and askid!=''">
+			askid=#{askid},
+			</if>
+			<if test="askid!=null and askid!=''">
+			netaskid=#{netaskid},
+			</if>
+			<if test="baobei!=null and baobei=!''">
+			baobei=#{baobei},
+			</if>
+			<if test="jiaofeiTime!=null and jiaofeiTime!=''">
+			jiaofeiTime=#{jiaofeiTime},
+			</if>
+			<if test="money!=null and money=!''">
+			money=#{money},
+			</if>
+			<if test="weChat!=null and weChat!=''">
+			weChat=#{weChat},
+			</if>
+			<if test="sFjiaofei!=null and sFjiaofei!=''">
+			sFjiaofei=#{sFjiaofei},
+			</if>
+			<if test="qq!=null and qq!=''">
+			qq=#{qq},
+			</if>
+			<if test="address!=null and address!=''">
+			address=#{address},
+			</if>
+			<if test="dingjin!=null and dingjin!=''">
+			dingjin=#{dingjin},
+			</if>
+			<if test="shangmengTime!=null and shangmengTime!=''">
+			shangmengTime=#{shangmengTime},
+			</if>
+			<if test="messageWord!=null and messageWord!=''">
+			messageWord=#{messageWord},
+			</if>
+			<if test="sFshangmeng!=null and sFshangmeng!=''">
+			sFshangmeng=#{sFshangmeng},
+			</if>
+			<if test="messageAddress!=null and messageAddress!=''">
+			messageAddress=#{messageAddress},
+			</if>
+			<if test="firsthuifangTime!=null and firsthuifangTime!=''">
+			firsthuifangTime=#{firsthuifangTime},
+			</if>
+			<if test="messageChannel!=null and messageChannel!=''">
+			messageChannel=#{messageChannel},
+			</if>
+			<if test="sFhuifang!=null and sFhuifang!=''">
+			sFhuifang=#{sFhuifang},
+			</if>
+			<if test="status!=null and status!=''">
+			status=#{status},
+			</if>
+			<if test="wuxiaoyuanying!=null and wuxiaoyuanying!=''">
+			wuxiaoyuanying=#{wuxiaoyuanying},
+			</if>
+			<if test="xueli!=null and xueli!=''">
+			xueli=#{xueli},
+			</if>
+			<if test="sfyouxiao!=null and sfyouxiao!=''">
+			sfyouxiao=#{sfyouxiao},
+			</if>
+			
+			<if test="sphone!=null and sphone!=''">
+			sphone=#{sphone},
+			</if>
+			<if test="dafen!=null and dafen!=''">
+			dafen=#{dafen},
+			</if>
+			<if test="age!=null and age!=''">
+			age=#{age},
+			</if>
+			<if test="kecFangXiang!=null and kecFangXiang!=''">
+			kecFangXiang=#{kecFangXiang}
+			</if>
+		</set>
+		<where>
+			sid=#{sid}
+		</where>
+	</update>
+	<select id="sssssss" parameterType="list" resultType="students">
+		select * from students where sid in
+		<foreach collection="list" item="item" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="selectUExecl" parameterType="int" resultType="users">
+		select
+		* from users where uid=#{uid}
+	</select>
+	<select id="selectFenpeik" parameterType="fenyeStu"
+		resultType="students">
+		select * FROM students where askid IS NULL limit
+		#{page},#{rows}
+	</select>
+	<select id="selectFenpei" parameterType="fenyeStu"
+		resultType="int">
+		select count(sid) FROM students where askid IS NULL
+	</select>
+	<update id="updateFenpei" parameterType="list">
+	update students set askid=#{uid} where sid in 
+	<foreach collection="list" item="item" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</update>
+	<insert id="insertDT">
+	insert into dongtai(dtext,sendid,sname,sendTime,status,zxsid) values(#{dtext},#{sendid},#{sname},#{sendTime},#{status},#{zxsid})
+	</insert>
+	<select id="selectDDTT" parameterType="int" resultType="dongtai">
+	select * from dongtai where status=0 and zxsid=#{zxsid}
+	</select>
+	<update id="updateDt">
+	update dongtai set  status=#{status} where dtid=#{dtid}
+	</update>
+	<select id="selectDT" parameterType="dongtai" resultType="dongtai">
+SELECT *  from (select d.sname,d.zxsid,d.status,d.dtext,d.dtid,d.sendTime,u.uname from dongtai  d INNER JOIN users u ON d.sendid=u.uid ) l where status=#{status} and   zxsid=#{zxsid}
+
+
+	</select>
+	<select id="selectDTNUM" parameterType="fenyedt" resultType="int">
+	select count(l.dtid) from (select * from dongtai  d,users u where  d.sendid=u.uid ) l
+	</select>
+	<select id="selectyijianfenpei" resultType="students">
+	select sid FROM students where askid IS NULL
+	</select>
+</mapper>

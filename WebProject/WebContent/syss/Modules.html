@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>模块</title>
+		<script src="../js/easyui_gonggong.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/Modules.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			div {
+				border: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="shutianjia()" data-options="iconCls:'icon-add'">添加</a>
+		<a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="shuxiugai()" data-options="iconCls:'icon-edit'">修改</a>
+		<a id="btn" href="javascript:void(0)" class="easyui-linkbutton" onclick="shushanchu()" data-options="iconCls:'icon-cancel'">删除</a>
+		<div id="mkdiv" class="easyui-panel" style="padding:5px">
+			<ul id="tt" class="easyui-tree" data-options="iconCls:'icon-save',collapsible:true"></ul>
+		</div>
+
+		<div id="xiutab" class="easyui-window" title="修改" style="width:300px;height:400px;text-align: right;padding-right: 30px;" data-options="iconCls:'icon-save',modal:true">
+			<form id="xiuform"><br /> 权重：
+				<input class="easyui-validatebox" required="true" validType="intPlus" type="text" name="weight" id="weight" /><br /><br /> URI：
+				<input class="easyui-validatebox" required="true" type="text" name="url" id="url" /><br /><br /> 模块名称：
+				<input class="easyui-validatebox" required="true" type="text" name="name" id="name" /><br /><br />
+				<a id="btn1" href="javascript:void(0)" class="easyui-linkbutton" onclick="mkxiugai()" data-options="iconCls:'icon-ok'">修改</a>
+			</form>
+		</div>
+
+		<div id="mkadddiv" class="easyui-window" title="添加" style="width:300px;height:400px;text-align: right;padding-right: 30px;" data-options="iconCls:'icon-save',modal:true">
+			<form id="mkaddform"><br /> 权重：
+				<input class="easyui-validatebox" required="true" validType="intPlus" type="text" name="addweight" id="addweight" /><br /><br /> URI：
+				<input class="easyui-validatebox" required="true" type="text" name="addurl" id="addurl" /><br /><br /> 模块名称：
+				<input class="easyui-validatebox" required="true" type="text" name="addname" id="addname" /><br /><br />
+				<a id="btn1" href="javascript:void(0)" class="easyui-linkbutton" onclick="mktianjia()" data-options="iconCls:'icon-ok'">添加</a>
+			</form>
+		</div>
+		<div id="mm" class="easyui-menu" data-options="onClick:menuHandler" style="width:120px;">
+			<div data-options="iconCls:'icon-add',name:'add'">添加</div>
+			<div data-options="iconCls:'icon-edit',name:'edit'">修改</div>
+			<div data-options="iconCls:'icon-remove',name:'remove'">删除</div>
+		</div>
+
+	</body>
+
+</html>

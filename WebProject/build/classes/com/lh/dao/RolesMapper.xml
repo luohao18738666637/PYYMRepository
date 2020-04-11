@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.dao.RolesMapper">
+<select id="select" parameterType="fenyeRoles" resultType="roles"> 
+select rid,rname from roles
+<where>
+<if test="rname!=null and rname!='' ">
+rname like "%"#{rname}"%"
+</if>
+</where>
+ limit #{page},#{rows}
+</select>
+<select id="selectNum" parameterType="fenyeRoles" resultType="int">
+select count(rid) from roles
+</select>
+<insert id="insertRoles">
+insert into roles(rname) values(#{rname});
+</insert>
+<delete id="deleteRoles">
+delete from roles where rid=#{rid}
+</delete>
+<update id="updateRoles">
+update roles set rname=#{rname} where rid=#{rid}
+</update>
+<select id="selectP" parameterType="string" resultType="roles">
+select rid,rname from roles where rname=#{rname}
+</select>
+<delete id="deleteRolesModules">
+delete from roleModules where rid=#{rid}
+</delete>
+ <insert id="insertRolesModoules" parameterType="list" >
+insert into roleModules(rid,mid)values
+<foreach collection="list" item="item" open="(" separator="),(" close=")">
+	#{item.rid},#{item.mid}
+	</foreach>
+</insert> 
+<select id="selectByrid" parameterType="int" resultType="userroles">
+select uid from userroles where  rid=#{rid}
+</select>
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.dao.UsersMapper">
+<resultMap type="node" id="dd">
+<result column="id" property="id"/>
+<result column="text" property="text"/>
+<result column="path" property="path"/>
+</resultMap>
+<sql id="wheSql">
+<where>
+<if test="uname !=null and uname !=''">
+and uname like "%"#{uname}"%"
+</if>
+
+<if test="setTime !=null and setTime !=''">
+ and userTime &gt;#{setTime}
+</if>
+<if test="endTime !=null and endTime !=''">
+and userTime &lt;#{endTime}
+</if>
+<if test="lockout!=null">
+and lockout =#{lockout}
+</if>
+</where>
+</sql>
+<select id="selectcount" parameterType="fenyeUsers" resultType="int">
+select count(uid) from users
+<include refid="wheSql"></include>
+</select>
+<select id="selectUsers" parameterType="fenyeUsers" resultType="users">
+select uid,zname,uname,upassword,uphone,lockout,uemail,userTime,qiandao from users
+<include refid="wheSql"></include>
+limit #{page},#{pageSize}
+</select>
+
+<update id="updateusers">
+update users <set>
+<if test="uphone !=null and uphone !=''">
+ uphone =#{uphone},
+</if>
+<if test="uemail !=null and uemail !=''">
+ uemail =#{uemail},
+</if>
+<if test="upassword !=null and upassword !=''">
+ upassword =#{upassword},
+</if>
+<if test="lockout !=null ">
+ lockout =#{lockout}
+</if>
+</set>
+<where>uid =#{uid} </where>
+</update>
+<delete id="deleteusers">
+delete from Users <where>uid =#{uid}</where>
+</delete>
+<insert id="insertusers">
+insert into users(uname,upassword,userTime,uphone,uemail,lockout,status)
+values(#{uname},#{upassword},#{userTime},#{uphone},#{uemail},#{lockout},#{status})
+</insert>
+<select id="selectU" resultType="users">
+select zname,uid,upassword,uname,lockout,qiandao,uphone,uemail,status from users 
+<where>
+uname=#{uname}
+</where>
+</select>
+<select id="selectRolesAll"  resultType="roles">
+select rid,rname from roles
+</select>
+<select id="selectUserRoles" parameterType="int" resultType="roles">
+ select  r.rid,r.rname  from roles r INNER JOIN (select ur.urid,ur.uid,ur.rid from userroles ur INNER JOIN users u on u.uid=ur.uid) us on  us.rid = r.rid
+<where>us.uid=#{uid}</where> 
+</select>
+
+<delete id="deleteUserRoles">
+delete from userroles <where>uid=#{uid} and rid=#{rid}</where> 
+</delete>
+<insert id="insertUserRoles">
+insert into userroles(uid,rid) values(#{uid},#{rid})
+</insert>
+<select id="selectUserUname" resultType="users">
+select uname from users 
+</select>
+<update id="updateUpassword">
+update users set  upassword=#{upassword} where uname=#{uname}
+</update>
+<select id="selectByuid" parameterType="int" resultType="userroles">
+select rid from userroles where uid=#{uid}
+</select>
+<update id="updateQiantui" parameterType="list">
+update users set qiandao=#{qiandao} where uid in
+<foreach collection="list" item="item" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+</update>
+<update id="updateQiandao">
+update users set qiandao=#{qiandao},qiandaoTime=#{qiandaoTime}
+<where>
+ uid=#{uid}
+ </where>
+</update>
+<update id="qiantuiall">
+update users set qiandao=0  where  qiandao=#{qiandao}
+</update>
+<select id="selectzxsid" resultType="userroles">
+select uid from userroles WHERE rid=1
+</select>
+<select id="selectWanshan" parameterType="string" resultType="users">
+select uid,uname,uphone,upassword,uemail from users where uname=#{uname}
+</select>
+<update id="updatesuoding">
+update users set lockout=#{lockout},status=#{status} where uid=#{uid}
+</update>
+<update id="updatecishu">
+update users set status=#{status} where uid=#{uid}
+</update>
+<update id="updategerenxx">
+update users
+<set>
+<if test="zname!=null and zname!=''">
+zname=#{zname},
+</if>
+<if test="uphone!=null and uphone!=''">
+ uphone=#{uphone},
+</if>
+<if test="uemail!=null and uemail!=''">
+uemail=#{uemail}
+</if>
+</set>
+<where>
+uid=#{uid}
+</where>
+</update>
+</mapper>

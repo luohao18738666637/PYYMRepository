@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.dao.DataMapper">
+<sql id="whesql">
+<where>
+<if test="sname !=null and sname !=''">
+and du.sid in (select sid from students where sname like "%"#{sname}"%")
+</if>
+
+<if test="zname !=null and zname !=''">
+and du.uid=(select uid from users where zname = #{zname})
+</if>
+<if test="startTime !=null and startTime !=''">
+and du.startTime &gt; #{startTime}
+</if>
+<if test="endTime !=null and endTime !=''">
+and du.endTime &lt; #{endTime}
+</if>
+<if test="hFqingkuang !=null and hFqingkuang !=''">
+and du.hFqingkuang = #{hFqingkuang}
+</if>
+<if test="gZfangshi !=null and gZfangshi !=''">
+and du.gZfangshi like "%"#{gZfangshi}"%"
+</if>
+<if test="uid!=null and uid!=''">
+ and uid=#{uid}
+</if>
+           
+</where>
+</sql>
+<select id="selectDatacount" parameterType="fenyeData" resultType="Integer">
+select count(du.dataid) from data du
+<include refid="whesql"></include>
+</select>
+
+<select id="selectData" parameterType="fenyeData" resultType="data">
+
+ select du.dataid,du.uid,du.zname,du.startTime,du.endTime,du.hFTime,du.hFqingkuang,du.gZneirong,du.gZfangshi,du.xCgenzhongTime,du.sid,s.sname  from (select dataid,sid,u.uid,u.zname,startTime,endTime,hFTime,hFqingkuang,gZneirong,gZfangshi,xCgenzhongTime from data d INNER JOIN  users u  on u.uid=d.uid) du INNER JOIN students s  on s.sid=du.sid  
+
+<include refid="whesql"></include>
+limit #{page},#{pageSize}
+</select>
+
+<select id="selectDatabySid" parameterType="Integer" resultType="data">
+
+select du.dataid,du.uid,du.zname,du.startTime,du.endTime,du.hFTime,du.hFqingkuang,du.gZneirong,du.gZfangshi,du.xCgenzhongTime,s.sid,s.sname  from (select dataid,sid,u.uid,u.zname,startTime,endTime,hFTime,hFqingkuang,gZneirong,gZfangshi,xCgenzhongTime from data d INNER JOIN  users u  on u.uid=d.uid) du INNER JOIN students s  on s.sid=du.sid  
+
+<where>s.sid =#{sid} </where>
+</select>
+
+ <insert id="insertData"> 
+insert into data(sid,uid,hFTime,hFqingkuang,gZfangshi,xCgenzhongTime,gZneirong)
+      values(#{sid},#{uid},#{hFTime},#{hFqingkuang},#{gZfangshi},#{xCgenzhongTime},#{gZneirong})
+</insert> 
+
+<delete id="deleteDatabyId">
+delete from data <where> dataid=#{dataid}</where>
+</delete>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
